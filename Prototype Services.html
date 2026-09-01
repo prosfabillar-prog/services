@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wyze App Prototype - Branching Paths</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        /* Responsive container that scales to fit the screen without cropping the image */
+        .prototype-container {
+            position: relative;
+            height: 95vh; /* Fits within most screens */
+            aspect-ratio: 1170 / 2532; /* Standard mobile screenshot aspect ratio */
+            background: #ffffff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        /* Screens */
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease-in-out;
+            background-color: #ffffff;
+        }
+
+        .screen.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .screen img {
+            width: 100%;
+            height: 100%;
+            /* Ensures the entire image is visible and fully utilized */
+            object-fit: contain; 
+            pointer-events: none;
+        }
+
+        /* Clickable Hotspots */
+        .hotspot {
+            position: absolute;
+            cursor: pointer;
+            background: rgba(81, 50, 255, 0); 
+            transition: background 0.2s;
+        }
+
+        .hotspot:hover {
+            background: rgba(81, 50, 255, 0.15); 
+        }
+
+        /* ================= HOTSPOT POSITIONS ================= */
+
+        /* Path 1: Cloud 60 Add-on Flow */
+        .hotspot-services {
+            top: 51%;
+            left: 5%;
+            width: 90%;
+            height: 7.5%;
+            border-radius: 12px;
+        }
+        .hotspot-cloud60 {
+            top: 40%;
+            left: 5%;
+            width: 90%;
+            height: 11%;
+            border-radius: 16px;
+        }
+        .hotspot-choose {
+            bottom: 4%;
+            left: 5%;
+            width: 90%;
+            height: 7%;
+            border-radius: 30px;
+        }
+        .hotspot-checkout {
+            bottom: 4%;
+            left: 5%;
+            width: 90%;
+            height: 7%;
+            border-radius: 30px;
+        }
+
+        /* Path 2: Manage Cam Plus Flow (New Additions) */
+        /* Targets the "Manage" button on the 1st photo (Account screen) */
+        .hotspot-manage {
+            top: 17%;
+            left: 73%;
+            width: 22%;
+            height: 5%;
+            border-radius: 20px;
+        }
+        /* Targets the "Edit" button on the Manage Plan screen */
+        .hotspot-edit {
+            top: 35.5%;
+            left: 80%;
+            width: 15%;
+            height: 4%;
+            border-radius: 10px;
+        }
+
+        /* Universal Back/Cancel Buttons */
+        .hotspot-back {
+            top: 5%;
+            left: 3%;
+            width: 12%;
+            height: 6%;
+            border-radius: 10px;
+        }
+        .hotspot-cancel {
+            bottom: 4%;
+            left: 20%;
+            width: 60%;
+            height: 6%;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="prototype-container">
+        <!-- Step 1: Account Screen (Branching point) -->
+        <div id="step1" class="screen active">
+            <img src="IMG_9010.PNG" alt="Account Screen">
+            <!-- Goes to Path 1 -->
+            <div class="hotspot hotspot-services" onclick="goToStep('step2')" title="Click 'Services'"></div>
+            <!-- Goes to Path 2 -->
+            <div class="hotspot hotspot-manage" onclick="goToStep('step-manage')" title="Click 'Manage'"></div>
+        </div>
+
+        <!-- ================= PATH 1: CLOUD 60 ADD-ON FLOW ================= -->
+
+        <!-- Step 2: Services Screen -->
+        <div id="step2" class="screen">
+            <img src="IMG_9008.PNG" alt="Services Screen">
+            <div class="hotspot hotspot-back" onclick="goToStep('step1')" title="Go Back"></div>
+            <div class="hotspot hotspot-cloud60" onclick="goToStep('step3')" title="Click 'Cloud 60'"></div>
+        </div>
+
+        <!-- Step 3: Cloud 60 Detail Screen -->
+        <div id="step3" class="screen">
+            <img src="IMG_9009.PNG" alt="Cloud 60 Details">
+            <div class="hotspot hotspot-back" onclick="goToStep('step2')" title="Go Back"></div>
+            <div class="hotspot hotspot-choose" onclick="goToStep('step4')" title="Click 'Choose cameras'"></div>
+        </div>
+
+        <!-- Step 4: Add Cloud 60 / Camera Selection Screen -->
+        <div id="step4" class="screen">
+            <img src="IMG_9011.PNG" alt="Camera Selection">
+            <div class="hotspot hotspot-back" onclick="goToStep('step3')" title="Go Back"></div>
+            <div class="hotspot hotspot-checkout" onclick="goToStep('step5')" title="Click 'Continue to checkout'"></div>
+        </div>
+
+        <!-- Step 5: Final Screen (Cloud 60) -->
+        <div id="step5" class="screen">
+            <img src="IMG_9006.PNG" alt="Change Covered Cameras">
+            <div class="hotspot hotspot-back" onclick="goToStep('step4')" title="Go Back"></div>
+            <div class="hotspot hotspot-cancel" onclick="goToStep('step1')" title="Cancel and Restart"></div>
+        </div>
+
+        <!-- ================= PATH 2: MANAGE PLAN FLOW ================= -->
+
+        <!-- Step 6 (Manage): Manage Cam Plus Plan Screen -->
+        <div id="step-manage" class="screen">
+            <img src="IMG_9012.PNG" alt="Manage Plan">
+            <div class="hotspot hotspot-back" onclick="goToStep('step1')" title="Go Back"></div>
+            <div class="hotspot hotspot-edit" onclick="goToStep('step-edit')" title="Click 'Edit'"></div>
+        </div>
+
+        <!-- Step 7 (Edit): Change covered cameras Screen -->
+        <div id="step-edit" class="screen">
+            <img src="IMG_9013.PNG" alt="Change Covered Cameras Locked">
+            <div class="hotspot hotspot-back" onclick="goToStep('step-manage')" title="Go Back"></div>
+            <div class="hotspot hotspot-cancel" onclick="goToStep('step-manage')" title="Cancel changes"></div>
+        </div>
+    </div>
+
+    <script>
+        function goToStep(stepId) {
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => {
+                screen.classList.remove('active');
+            });
+            const target = document.getElementById(stepId);
+            if(target) {
+                target.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
